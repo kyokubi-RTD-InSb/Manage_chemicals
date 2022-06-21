@@ -1,0 +1,32 @@
+.modal {
+    background-color: white;
+    position: absolute;
+    min-height: 400px;
+    min-width: 300px;
+    height: 60vh;
+    width: 50%;
+    top: 50%;
+    left: 50%;
+    border-radius: 30px;
+    padding: 20px;
+    transform: translate(-50%, -50%);
+    outline: none;
+}
+
+.auth {
+    &__title {
+        font-size: 25px;
+        font-weight: 600;
+    }
+
+    &__tips {
+        color: rgb(0, 145, 255);
+        font-weight: 400;
+        transition: color 0.4s ease;
+        cursor: pointer;
+
+        &:hover {
+            color: #3eb070;
+        }
+    }
+}
