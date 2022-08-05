@@ -8,6 +8,7 @@ import { endSignIn, endSignUp, startSignIn } from "./features/auth/authSlice";
 import {
   asyncGetAllChemicalNames,
   asyncGetAllChemicals,
+  asyncGetAllChemicalShippedFor,
 } from "./features/chemical/chemicalSlice";
 import {
   asyncGetAllDate,
@@ -28,6 +29,7 @@ function App() {
         dispatch(asyncGetAllUsers());
         dispatch(asyncGetAllChemicalNames());
         dispatch(asyncGetAllChemicals());
+        dispatch(asyncGetAllChemicalShippedFor());
         dispatch(endSignIn());
         dispatch(endSignUp());
       } else {

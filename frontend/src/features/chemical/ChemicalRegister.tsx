@@ -30,6 +30,7 @@ import {
 } from "../date/dateSlice";
 import { PROPS_POST_CHEMICAL } from "../../types/chemical_types";
 import { selectMyprofile } from "../user/userSlice";
+import { ChemShippedFor } from "../../components/chemical/atoms/ChemShippedFor";
 
 export const ChemicalRegister = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -108,6 +109,7 @@ export const ChemicalRegister = () => {
       used_amount: chemPostInfo.chemAmount,
       used_date: relatedDate.id,
       used_user: myprofile[0].userProfile,
+      shipped_for: chemPostInfo.chemShippedFor,
     };
 
     const res = await dispatch(asyncCreateChemical(postData));
@@ -145,14 +147,15 @@ export const ChemicalRegister = () => {
               sx={{
                 width: "70%",
                 display: "flex",
-                height:"100%",
+                height: "100%",
                 flexDirection: "column",
                 justifyContent: "space-evenly",
                 alignItems: "center",
               }}
             >
-              <h3 style={{paddingBottom: '40px'}}>廃液登録</h3>
+              <h3 style={{ paddingBottom: "40px" }}>廃液登録</h3>
               <ChemNameField />
+              <ChemShippedFor />
               <Box
                 sx={{
                   display: "flex",

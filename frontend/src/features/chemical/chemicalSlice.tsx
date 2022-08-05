@@ -37,7 +37,23 @@ export const asyncCreateChemical = createAsyncThunk(
 export const asyncDeleteChemical = createAsyncThunk(
   "chemical/delete",
   async (chem_id: string) => {
-    const res = await axios.delete(`${API_URL}/rest_api/compose/chemical/${chem_id}/`, {
+    const res = await axios.delete(
+      `${API_URL}/rest_api/compose/chemical/${chem_id}/`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.localJWT}`,
+        },
+      }
+    );
+    return res.data;
+  }
+);
+
+export const asyncGetAllChemicalNames = createAsyncThunk(
+  "chemName/get",
+  async () => {
+    const res = await axios.get(`${API_URL}/rest_api/compose/chemical_name/`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `JWT ${localStorage.localJWT}`,
@@ -47,10 +63,10 @@ export const asyncDeleteChemical = createAsyncThunk(
   }
 );
 
-export const asyncGetAllChemicalNames = createAsyncThunk(
-  "chemName/get",
+export const asyncGetAllChemicalShippedFor = createAsyncThunk(
+  "shipped/get",
   async () => {
-    const res = await axios.get(`${API_URL}/rest_api/compose/chemical_name/`, {
+    const res = await axios.get(`${API_URL}/rest_api/compose/shipped_for/`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `JWT ${localStorage.localJWT}`,
@@ -73,6 +89,7 @@ export const chemicalSlice = createSlice({
     chemPostInfo: {
       chemName: 1,
       chemAmount: 1,
+      chemShippedFor: 1,
       year: year,
       month: month,
       day: day,
@@ -84,6 +101,8 @@ export const chemicalSlice = createSlice({
         used_amount: 0,
         used_date: 0,
         used_user: "",
+        shipped_for: 0,
+        is_registerd: false,
         created_at: "",
         updated_at: "",
       },
@@ -92,6 +111,12 @@ export const chemicalSlice = createSlice({
       {
         id: 0,
         name: "",
+      },
+    ],
+    allShippedFor: [
+      {
+        id: 0,
+        shipped_for: "",
       },
     ],
   },
@@ -110,6 +135,9 @@ export const chemicalSlice = createSlice({
     },
     editChemName(state, action) {
       state.chemPostInfo.chemName = action.payload;
+    },
+    editChemShippedFor(state, action) {
+      state.chemPostInfo.chemShippedFor = action.payload
     },
     editChemAmount(state, action) {
       state.chemPostInfo.chemAmount = action.payload;
@@ -138,6 +166,12 @@ export const chemicalSlice = createSlice({
     builder.addCase(asyncGetAllChemicalNames.fulfilled, (state, action) => {
       state.allChemicalNames = action.payload;
     });
+    builder.addCase(
+      asyncGetAllChemicalShippedFor.fulfilled,
+      (state, action) => {
+        state.allShippedFor = action.payload;
+      }
+    );
   },
 });
 
@@ -149,6 +183,7 @@ export const {
   resetChemPostInfo,
   editChemAmount,
   editChemName,
+  editChemShippedFor,
   editDay,
   editMonth,
   editYear,
@@ -164,5 +199,7 @@ export const selectChemPostInfo = (state: RootState) =>
   state.chemical.chemPostInfo;
 export const selectIsChemLoading = (state: RootState) =>
   state.chemical.isChemLoading;
+export const selectAllShippedFor = (state: RootState) =>
+  state.chemical.allShippedFor;
 
 export default chemicalSlice.reducer;

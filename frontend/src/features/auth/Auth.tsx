@@ -26,6 +26,7 @@ import {
 import {
   asyncGetAllChemicalNames,
   asyncGetAllChemicals,
+  asyncGetAllChemicalShippedFor,
 } from "../chemical/chemicalSlice";
 import { asyncGetAllDate, asyncGetAllYearAndMonth } from "../date/dateSlice";
 
@@ -106,6 +107,7 @@ export const Auth = () => {
                     await dispatch(asyncGetAllUsers());
                     await dispatch(asyncGetAllChemicalNames());
                     await dispatch(asyncGetAllChemicals());
+                    await dispatch(asyncGetAllChemicalShippedFor());
                     await dispatch(endSignIn());
                     await dispatch(endSignUp());
                     await dispatch(endIsAuthLoading());
@@ -192,6 +194,7 @@ export const Auth = () => {
                     await dispatch(asyncGetAllUsers());
                     await dispatch(asyncGetAllChemicalNames());
                     await dispatch(asyncGetAllChemicals());
+                    await dispatch(asyncGetAllChemicalShippedFor());
                     await dispatch(endSignIn());
                     await dispatch(endSignUp());
                     await dispatch(endIsAuthLoading());

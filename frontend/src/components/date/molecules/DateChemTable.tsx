@@ -27,6 +27,8 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useState } from "react";
+import { IsRegisterdSwitch } from "../atom/IsRegisterdSwitch";
+
 
 interface PROPS_CHEM_TABLE {
   related_chems: Array<PROPS_ALL_CHEMICALS>;
@@ -66,6 +68,7 @@ export const DateChemTable = (props: PROPS_CHEM_TABLE) => {
     await dispatch(asyncGetAllChemicals());
     await setOpen(false);
   };
+  console.log(related_chems)
 
   let chem_amount_total = 0;
 
@@ -79,6 +82,8 @@ export const DateChemTable = (props: PROPS_CHEM_TABLE) => {
               </StyledTableCell>
               <StyledTableCell align="right">使用量&nbsp;(g)</StyledTableCell>
               <StyledTableCell align="right">使用日</StyledTableCell>
+              <StyledTableCell align="right">登録済み</StyledTableCell>
+              <StyledTableCell align="right">廃液先</StyledTableCell>
               <StyledTableCell align="right">編集</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -92,6 +97,7 @@ export const DateChemTable = (props: PROPS_CHEM_TABLE) => {
                   chemical={chem}
                   is_user={true}
                   is_date={false}
+                  is_registerd={false}
                 />
                 <StyledTableCell align="right">
                   {chem.used_amount}&nbsp;g
@@ -100,6 +106,16 @@ export const DateChemTable = (props: PROPS_CHEM_TABLE) => {
                   chemical={chem}
                   is_user={false}
                   is_date={true}
+                  is_registerd={false}
+                />
+                <StyledTableCell align="right">
+                  <IsRegisterdSwitch is_registerd={chem.is_registerd} />
+                </StyledTableCell>
+                <CustomStyledTableCell
+                  chemical={chem}
+                  is_user={false}
+                  is_date={false}
+                  is_registerd={true}
                 />
                 <StyledTableCell align="right">
                   {chem.used_user === myprofile[0].userProfile ? (

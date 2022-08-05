@@ -7,6 +7,7 @@ from . import views
 router = routers.SimpleRouter()
 router.register('chemical', views.ChemicalViewSet)
 router.register('chemical_name', views.ChemicalNameViewSet)
+router.register('shipped_for', views.ChemicalShippedForViewSet)
 router.register('date', views.ManageDateViewSet)
 router.register('year_month', views.YearAndMonthViewSet)
 router.register('profile', views.ProfileViewSet)

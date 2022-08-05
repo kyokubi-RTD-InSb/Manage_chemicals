@@ -14,3 +14,7 @@ class ChemicalViewSet(viewsets.ModelViewSet):
 class ChemicalNameViewSet(viewsets.ModelViewSet):
     queryset = models.ChemicalName.objects.all()
     serializer_class = serializers.ChemicalNameSerializer
+
+class ChemicalShippedForViewSet(viewsets.ModelViewSet):
+    queryset = models.ChemicalShippedFor.objects.all()
+    serializer_class = serializers.ChemicalShippedForSerializer

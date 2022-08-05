@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { selectAllShippedFor } from "../../../features/chemical/chemicalSlice";
 import {
   selectAllDate,
   selectAllYearAndMonth,
@@ -11,13 +12,15 @@ interface PROPS_CUSTOM_CELL {
   chemical: PROPS_ALL_CHEMICALS;
   is_user: boolean;
   is_date: boolean;
+  is_registerd: boolean;
 }
 
 export const CustomStyledTableCell = (props: PROPS_CUSTOM_CELL) => {
-  const { chemical, is_user, is_date } = props;
+  const { chemical, is_user, is_date, is_registerd } = props;
 
   const allUsers = useSelector(selectAllUsers);
   const allDates = useSelector(selectAllDate);
+  const allShippedFor = useSelector(selectAllShippedFor);
   const allYearAndMonth = useSelector(selectAllYearAndMonth);
 
   const relatedUser = allUsers.find((user) => {
@@ -32,6 +35,8 @@ export const CustomStyledTableCell = (props: PROPS_CUSTOM_CELL) => {
     (ym) => ym.id === relatedDate?.year_and_month
   );
 
+  const related_shipped = allShippedFor.find((sf) => sf.id === chemical.shipped_for)
+
   return (
     <>
       {is_user && (
@@ -42,6 +47,11 @@ export const CustomStyledTableCell = (props: PROPS_CUSTOM_CELL) => {
       {is_date && (
         <StyledTableCell align="right">
           {`${relatedYearAndMonth?.create_month}月${relatedDate?.create_day}日`}
+        </StyledTableCell>
+      )}
+      {is_registerd && (
+        <StyledTableCell align="right">
+          {related_shipped?.shipped_for}
         </StyledTableCell>
       )}
     </>

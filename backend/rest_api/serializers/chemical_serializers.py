@@ -14,3 +14,8 @@ class ChemicalNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ChemicalName
         fields = '__all__'
+
+class ChemicalShippedForSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ChemicalShippedFor
+        fields = '__all__'

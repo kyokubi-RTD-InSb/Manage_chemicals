@@ -36,8 +36,9 @@ services:
       - ./frontend:/code
       - node_modules_volume:/code/node_modules
     tty: true
-    command: yarn start
+    entrypoint: "bash -c 'npm install && yarn start'"
     stdin_open: true
+    command: yarn start
     ports:
       - 3000:3000
     restart: always
