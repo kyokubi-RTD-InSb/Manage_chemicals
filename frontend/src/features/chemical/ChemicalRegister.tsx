@@ -154,8 +154,8 @@ export const ChemicalRegister = () => {
               }}
             >
               <h3 style={{ paddingBottom: "40px" }}>廃液登録</h3>
-              <ChemNameField />
-              <ChemShippedFor />
+              <ChemNameField is_edit={false} />
+              <ChemShippedFor is_edit={false} />
               <Box
                 sx={{
                   display: "flex",
@@ -166,7 +166,7 @@ export const ChemicalRegister = () => {
                   width: "100%",
                 }}
               >
-                <ChemAmountField />
+                <ChemAmountField is_edit={false} />
                 <ChemDateField />
               </Box>
               <Button

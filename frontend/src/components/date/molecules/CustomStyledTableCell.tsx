@@ -41,12 +41,12 @@ export const CustomStyledTableCell = (props: PROPS_CUSTOM_CELL) => {
     <>
       {is_user && (
         <StyledTableCell component="th" scope="row">
-          {relatedUser?.username}
+          {(relatedUser?.username !== undefined || null) ? (relatedUser?.username) : (<p>削除されたユーザー</p>)}
         </StyledTableCell>
       )}
       {is_date && (
         <StyledTableCell align="right">
-          {`${relatedYearAndMonth?.create_month}月${relatedDate?.create_day}日`}
+          {`${relatedYearAndMonth?.create_year}年${relatedYearAndMonth?.create_month}月${relatedDate?.create_day}日`}
         </StyledTableCell>
       )}
       {is_registerd && (

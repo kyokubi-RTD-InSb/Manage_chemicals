@@ -2,9 +2,9 @@ import { TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../app/store";
 import {
-  editDay,
-  editMonth,
-  editYear,
+  editPostDay,
+  editPostMonth,
+  editPostYear,
   selectChemPostInfo,
 } from "../../../features/chemical/chemicalSlice";
 
@@ -20,9 +20,9 @@ export const ChemDateField = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const date = event.target.value.split("-");
-    dispatch(editYear(Number(date[0])));
-    dispatch(editMonth(Number(date[1])));
-    dispatch(editDay(Number(date[2])));
+    dispatch(editPostYear(Number(date[0])));
+    dispatch(editPostMonth(Number(date[1])));
+    dispatch(editPostDay(Number(date[2])));
   };
 
   return (

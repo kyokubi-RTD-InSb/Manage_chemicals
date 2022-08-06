@@ -1,7 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../app/store";
-import { PROPS_POST_CHEMICAL } from "../../types/chemical_types";
+import {
+  PROPS_ALL_CHEMICALS,
+  PROPS_POST_CHEMICAL,
+} from "../../types/chemical_types";
 import { API_URL } from "../../utils/api";
 
 export const asyncGetAllChemicals = createAsyncThunk(
@@ -50,6 +53,23 @@ export const asyncDeleteChemical = createAsyncThunk(
   }
 );
 
+export const asyncPutChemical = createAsyncThunk(
+  "chemical/put",
+  async (put_info: PROPS_ALL_CHEMICALS) => {
+    const res = await axios.put(
+      `${API_URL}/rest_api/compose/chemical/${put_info.id}/`,
+      put_info,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.localJWT}`,
+        },
+      }
+    );
+    return res.data;
+  }
+);
+
 export const asyncGetAllChemicalNames = createAsyncThunk(
   "chemName/get",
   async () => {
@@ -85,14 +105,26 @@ export const chemicalSlice = createSlice({
   name: "chemical",
   initialState: {
     openChemPost: false,
+    openChemEdit: false,
     isChemLoading: false,
     chemPostInfo: {
       chemName: 1,
-      chemAmount: 1,
+      chemAmount: 0,
       chemShippedFor: 1,
       year: year,
       month: month,
       day: day,
+    },
+    chemPutInfo: {
+      id: "",
+      created_at: "",
+      updated_at: "",
+      used_amount: 0,
+      is_registerd: false,
+      name: 0,
+      used_date: 0,
+      used_user: "",
+      shipped_for: 0,
     },
     allChemicals: [
       {
@@ -127,28 +159,35 @@ export const chemicalSlice = createSlice({
     endChemPost(state) {
       state.openChemPost = false;
     },
+    startChemEdit(state) {
+      state.openChemEdit = true;
+    },
+    endChemEdit(state) {
+      state.openChemEdit = false;
+    },
     startChemLoading(state) {
       state.isChemLoading = true;
     },
     endChemLoading(state) {
       state.isChemLoading = false;
     },
-    editChemName(state, action) {
+    // Post edit
+    editChemPostName(state, action) {
       state.chemPostInfo.chemName = action.payload;
     },
-    editChemShippedFor(state, action) {
-      state.chemPostInfo.chemShippedFor = action.payload
+    editChemPostShippedFor(state, action) {
+      state.chemPostInfo.chemShippedFor = action.payload;
     },
-    editChemAmount(state, action) {
+    editChemPostAmount(state, action) {
       state.chemPostInfo.chemAmount = action.payload;
     },
-    editYear(state, action) {
+    editPostYear(state, action) {
       state.chemPostInfo.year = action.payload;
     },
-    editMonth(state, action) {
+    editPostMonth(state, action) {
       state.chemPostInfo.month = action.payload;
     },
-    editDay(state, acion) {
+    editPostDay(state, acion) {
       state.chemPostInfo.day = acion.payload;
     },
     resetChemPostInfo(state) {
@@ -157,6 +196,22 @@ export const chemicalSlice = createSlice({
       state.chemPostInfo.month = month;
       state.chemPostInfo.day = day;
       state.chemPostInfo.chemName = 1;
+    },
+    // Put edit
+    editChemPutInfo(state, action) {
+      state.chemPutInfo = action.payload;
+    },
+    editChemPutAmount(state, action) {
+      state.chemPutInfo.used_amount = action.payload;
+    },
+    editChemPutName(state, action) {
+      state.chemPutInfo.name = action.payload;
+    },
+    editChemPutShippedFor(state, action) {
+      state.chemPutInfo.shipped_for = action.payload;
+    },
+    editChemPutIsRegisterd(state, action) {
+      state.chemPutInfo.is_registerd = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -178,15 +233,22 @@ export const chemicalSlice = createSlice({
 export const {
   startChemPost,
   endChemPost,
+  startChemEdit,
+  endChemEdit,
   startChemLoading,
   endChemLoading,
   resetChemPostInfo,
-  editChemAmount,
-  editChemName,
-  editChemShippedFor,
-  editDay,
-  editMonth,
-  editYear,
+  editChemPostAmount,
+  editChemPostName,
+  editChemPostShippedFor,
+  editChemPutInfo,
+  editPostDay,
+  editPostMonth,
+  editPostYear,
+  editChemPutAmount,
+  editChemPutIsRegisterd,
+  editChemPutName,
+  editChemPutShippedFor,
 } = chemicalSlice.actions;
 
 export const selectAllChemicals = (state: RootState) =>
@@ -195,8 +257,12 @@ export const selectAllChemicalNames = (state: RootState) =>
   state.chemical.allChemicalNames;
 export const selectOpenChemPost = (state: RootState) =>
   state.chemical.openChemPost;
+export const selectOpenChemEdit = (state: RootState) =>
+  state.chemical.openChemEdit;
 export const selectChemPostInfo = (state: RootState) =>
   state.chemical.chemPostInfo;
+export const selectChemPutInfo = (state: RootState) =>
+  state.chemical.chemPutInfo;
 export const selectIsChemLoading = (state: RootState) =>
   state.chemical.isChemLoading;
 export const selectAllShippedFor = (state: RootState) =>

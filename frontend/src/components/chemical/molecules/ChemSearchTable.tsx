@@ -16,22 +16,23 @@ import {
   selectAllUsers,
   selectMyprofile,
 } from "../../../features/user/userSlice";
-import { CustomStyledTableCell } from "./CustomStyledTableCell";
 import { AppDispatch } from "../../../app/store";
 import {
   asyncDeleteChemical,
   asyncGetAllChemicals,
   editChemPutInfo,
+  selectAllChemicalNames,
   selectChemPutInfo,
   startChemEdit,
 } from "../../../features/chemical/chemicalSlice";
 
 import { useState } from "react";
-import { IsRegisterdSwitch } from "../atom/IsRegisterdSwitch";
+import { CustomStyledTableCell } from "../../date/molecules/CustomStyledTableCell";
+import { IsRegisterdSwitch } from "../../date/atom/IsRegisterdSwitch";
+
 
 interface PROPS_CHEM_TABLE {
   related_chems: Array<PROPS_ALL_CHEMICALS>;
-  chem_name: string;
 }
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -54,14 +55,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export const DateChemTable = (props: PROPS_CHEM_TABLE) => {
-  const { related_chems, chem_name } = props;
+export const ChemSearchTable = (props: PROPS_CHEM_TABLE) => {
+  const { related_chems } = props;
   const [open, setOpen] = useState(false);
 
   const dispatch: AppDispatch = useDispatch();
 
   const myprofile = useSelector(selectMyprofile);
   const allUsers = useSelector(selectAllUsers);
+  const allChemNames = useSelector(selectAllChemicalNames)
 
   const getIsEdit = (used_user: string) => {
     const myInfo = allUsers.find(
@@ -75,7 +77,10 @@ export const DateChemTable = (props: PROPS_CHEM_TABLE) => {
     dispatch(startChemEdit());
   };
 
-  let chem_amount_total = 0;
+  const getChemName = (name_id: number) => {
+    const res = allChemNames.find((chem) => chem.id === name_id)
+    return res?.name
+  }
 
   return (
     <Box pl={2}>
@@ -84,6 +89,7 @@ export const DateChemTable = (props: PROPS_CHEM_TABLE) => {
           <TableHead>
             <TableRow>
               <StyledTableCell>使用者</StyledTableCell>
+              <StyledTableCell align="right">廃液名</StyledTableCell>
               <StyledTableCell align="right">使用量&nbsp;(g)</StyledTableCell>
               <StyledTableCell align="right">使用日</StyledTableCell>
               <StyledTableCell align="right">登録済み</StyledTableCell>
@@ -94,15 +100,15 @@ export const DateChemTable = (props: PROPS_CHEM_TABLE) => {
           <TableBody>
             {related_chems.map((chem) => (
               <StyledTableRow key={chem.id}>
-                <td style={{ display: "none" }}>
-                  {(chem_amount_total += chem.used_amount)}
-                </td>
                 <CustomStyledTableCell
                   chemical={chem}
                   is_user={true}
                   is_date={false}
                   is_registerd={false}
                 />
+                <StyledTableCell align="right">
+                  {getChemName(chem.name)}&nbsp;
+                </StyledTableCell>
                 <StyledTableCell align="right">
                   {chem.used_amount}&nbsp;g
                 </StyledTableCell>
@@ -141,41 +147,6 @@ export const DateChemTable = (props: PROPS_CHEM_TABLE) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Box px={3} py={1} fontSize="18px" fontWeight="600">
-            総数
-          </Box>
-          <Box px={3} py={1} fontSize="18px" fontWeight="700">
-            {related_chems.length}&nbsp;件
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Box px={3} py={1} fontSize="18px" fontWeight="600">
-            合計
-          </Box>
-          <Box px={3} py={1} fontSize="18px" fontWeight="700">
-            {chem_amount_total}&nbsp;g
-          </Box>
-        </Box>
-      </Box>
     </Box>
   );
 };

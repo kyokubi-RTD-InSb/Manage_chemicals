@@ -34,7 +34,7 @@ export const HeaderItems = () => {
       <Box className={styles.item} onClick={() => dispatch(startChemPost())}>
         廃液登録
       </Box>
-      <HeaderItem path="/chemical/">薬品一覧</HeaderItem>
+      <HeaderItem path="/search/">未登録の廃液</HeaderItem>
       <HeaderItem path="/date/">過去の廃液</HeaderItem>
       <div>
         <IconButton
